@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
-from app.models import Farmer, Restaurant, Individual
+from app.models import Farmer, Restaurant, Individual, Order
 from app.security import verify_password, hash_password
-from app.schemas import FarmerResponse, RestaurantResponse, IndividualResponse
+from app.schemas import FarmerResponse, RestaurantResponse, IndividualResponse, OrderCreate, OrderResponse
 
 # ✅ Authenticate User Without Returning Password
 def authenticate_user(db: Session, phone_no: str, password: str):
@@ -40,9 +40,6 @@ def get_user_by_phone(db: Session, phone_no: str):
     return None, None  # No user found
 
 
-
-
-
 # ✅ Create a new farmer
 def create_farmer(db: Session, farmer_data):
     hashed_password = hash_password(farmer_data.password)
@@ -75,3 +72,15 @@ def create_individual(db: Session, individual_data):
     db.commit()
     db.refresh(db_individual)
     return db_individual
+
+# Create a new order
+def create_order(db: Session, order_data: OrderCreate):
+    db_order = Order(**order_data.dict())
+    db.add(db_order)
+    db.commit()
+    db.refresh(db_order)
+    return db_order
+
+# Retrieve active orders
+def get_active_orders(db: Session):
+    return db.query(Order).filter(Order.status == "active").all()
