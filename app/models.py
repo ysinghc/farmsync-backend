@@ -35,3 +35,10 @@ class Individual(Base):
     age = Column(Integer, nullable=False)
     address = Column(String, nullable=False)
     pin_code = Column(Integer, nullable=False)
+
+class Order(Base):
+    __tablename__ = "orders"
+    id = Column(Integer, primary_key=True, index=True)
+    customer_id = Column(Integer, nullable=False)
+    customer_type = Column(String, nullable=False)
+    status = Column(String, nullable=False)

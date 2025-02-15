@@ -81,3 +81,19 @@ class UserLogin(BaseModel):
 class UserLoginResponse(BaseModel):
     user_type: str
     user_details: Optional[FarmerResponse | RestaurantResponse | IndividualResponse]
+
+# Schema for creating a new order
+class OrderCreate(BaseModel):
+    customer_id: int
+    customer_type: str
+    status: str
+
+# Schema for retrieving order details
+class OrderResponse(BaseModel):
+    id: int
+    customer_id: int
+    customer_type: str
+    status: str
+
+    class Config:
+        from_attributes = True
